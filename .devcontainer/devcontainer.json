@@ -1,0 +1,63 @@
+// .devcontainer/devcontainer.json
+{
+  "name": "Conductr",
+  "image": "mcr.microsoft.com/devcontainers/ruby:3.3",
+
+  // Add Node.js and GitHub CLI
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+
+  // Essential VS Code extensions only
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // Core Ruby/Rails
+        "Shopify.ruby-lsp",              // Official Ruby language server
+        "aki77.rails-db-schema",         // Rails schema navigation
+        "koichisasada.vscode-rdbg",      // Ruby debugging
+
+        // Templates & Styles
+        "bradlc.vscode-tailwindcss",     // Tailwind CSS
+        "elia.erb-formatter",            // ERB formatting
+
+        // Utilities
+        "redhat.vscode-yaml",           // YAML support
+        "esbenp.prettier-vscode"        // General formatting
+      ],
+      "settings": {
+        // Ruby
+        "ruby.useBundler": true,
+        "ruby.useLanguageServer": true,
+
+        // Editor
+        "editor.formatOnSave": true,
+        "editor.tabSize": 2,
+
+        // Files
+        "files.trimTrailingWhitespace": true,
+        "files.insertFinalNewline": true,
+
+        // Language specific
+        "[ruby]": {
+          "editor.defaultFormatter": "Shopify.ruby-lsp"
+        },
+        "[erb]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "elia.erb-formatter"
+        }
+      }
+    }
+  },
+
+  // Forward Rails server port
+  "forwardPorts": [3000],
+
+  // Setup commands
+  "postCreateCommand": "bundle install",
+  "postStartCommand": "bundle exec rails db:setup",
+  "postAttachCommand": {
+    "server": "bundle exec falcon serve --bind http://0.0.0.0:3000"
+  }
+}
